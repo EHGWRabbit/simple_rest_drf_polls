@@ -17,6 +17,15 @@ from django.urls import include, path
 from django.contrib import admin
 from rest_framework import routers
 from rest import views
+from rest_framework.documentation import include_docs_urls
+from rest_framework.schemas import get_schema_view
+from rest_framework_swagger.views import get_swagger_view
+
+
+API_TITLE = 'Opps API'
+API_DESCRIPTION = 'API для создания и редактирования опросов'
+
+schema_view = get_swagger_view(title=API_TITLE)
 
 router = routers.DefaultRouter()
 router.register('questions', views.QuestionViewSet)
@@ -25,5 +34,9 @@ urlpatterns = [
     path('rest/', include('rest.urls')),
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('docs/', include_docs_urls(title=API_TITLE, description=API_DESCRIPTION)),
+    #path('schema/', schema_view),
+    path('swagger-docs/', schema_view),
+    
 ]
